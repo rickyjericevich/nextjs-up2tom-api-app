@@ -3,41 +3,36 @@
 import Data from "@/schema/manual-schema/Data";
 import Model from "@/schema/manual-schema/Model";
 import Scenario from "@/schema/manual-schema/Scenario";
-import ScenarioResponse from "@/schema/manual-schema/ScenarioResponse";
+import DecisionSuccessResponse from "@/schema/manual-schema/DecisionSuccessResponse";
+import DecisionErrorResponse from "@/schema/manual-schema/DecisionErrorResponse";
+import { V3_API_Pathnames } from "@/schema/manual-schema/Enums";
+
+// TODO: move constants to a config file
+const baseUrl = 'https://api.up2tom.com';
+const apiKey = '9307bfd5fa011428ff198bb37547f979';
+
+const headers = {
+    'Content-Type': 'application/vnd.api+json',
+    'Authorization': 'Token ' + apiKey
+}
 
 export async function getTomModels(): Promise<Data<Model[]>> {
-    const res = await fetch('https://api.up2tom.com/v3/models',
-        {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/vnd.api+json',
-                'Authorization': 'Token 9307bfd5fa011428ff198bb37547f979'
-            }
-        }
-    );
-
+    const res = await fetch(new URL(V3_API_Pathnames.Models, baseUrl), { headers });
     return res.json();
 }
 
-export async function getTomDecision(modelId: string, formData: FormData): Promise<Data<ScenarioResponse>> {
-    const scenarioData: Data<Scenario> = {
-        data: {
-            type: "scenario",
-            attributes: { input: [...formData.values()] }
-        }
-    }
+export async function getTomDecision(modelId: string, formData: FormData): Promise<Data<DecisionSuccessResponse> | DecisionErrorResponse> {
+
+    const input = Array.from(formData.values()) // .map(v => isNaN(+v) ? v : +v) // convert string numbers to numbers (not necessary - API accepts string numbers too)
+    const scenarioData: Data<Scenario> = { data: { type: "scenario", attributes: { input } } };
 
     console.log("Getting tom decision:", modelId, JSON.stringify(scenarioData));
 
-    const res = await fetch(`https://api.up2tom.com/v3/decision/${modelId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/vnd.api+json',
-                'Authorization': 'Token 9307bfd5fa011428ff198bb37547f979'
-            },
-            body: JSON.stringify(scenarioData)
-        }
-    );
+    const res = await fetch(new URL(`${V3_API_Pathnames.Decision}/${modelId}`, baseUrl), {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(scenarioData)
+    });
 
     return res.json();
 }

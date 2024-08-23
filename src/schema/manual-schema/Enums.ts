@@ -21,3 +21,21 @@ export const enum RelationType {
     EQ = "EQ",
     NEQ = "NEQ",
 }
+
+export const enum StatusCode {
+    OK = 200,
+    BadRequest = 400,
+    Unauthorized = 401,
+    Forbidden = 403,
+    NotFound = 404,
+    MethodNotAllowed = 405,
+    UnprocessableContent = 422,
+    InternalServerError = 500,
+    ServiceUnavailable = 503,
+}
+
+export const enum V3_API_Pathnames {
+    Models = "v3/models",
+    Decision = "v3/decision",
+    Batch = "v3/batch",
+}

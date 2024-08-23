@@ -1,12 +1,10 @@
 'use client'
 
-import { useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getTomDecision } from "@/app/actions";
 import Model from "@/schema/manual-schema/Model";
 import AttributeInput from "./AttributeInput";
 import { useFormState, useFormStatus } from "react-dom";
-import Data from "@/schema/manual-schema/Data";
-import ScenarioResponse from "@/schema/manual-schema/ScenarioResponse";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -23,12 +21,11 @@ async function handleSubmit(previousState: any, formData: FormData) {
 export default function DecisionForm({ tomModels }: { tomModels: Model[] }): JSX.Element {
 
     const [model, setModel] = useState<Model>();
+    const [state, formAction] = useFormState(handleSubmit, null);
 
     function changeModel(e: React.ChangeEvent<HTMLSelectElement>) {
         setModel(tomModels.find(m => m.id === e.target.value));
     }
-
-    const [state, formAction] = useFormState(handleSubmit, null);
 
     useEffect(() => {
         //output the current values entered in the form
