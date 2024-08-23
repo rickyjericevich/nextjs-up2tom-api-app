@@ -1,5 +1,5 @@
-import Attribute from "@/schema/manual-schema/Attribute";
-import { AttributeType } from "@/schema/manual-schema/Enums";
+import Attribute from "@/schema/up2tom-v3/manual-schema/Attribute";
+import { AttributeType } from "@/schema/up2tom-v3/manual-schema/Enums";
 import ContinuousAttributeInput from "./ContinuousAttributeInput";
 import NominalAttributeInput from "./NominalAttributeInput";
 

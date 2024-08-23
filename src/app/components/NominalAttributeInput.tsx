@@ -1,4 +1,4 @@
-import CategoricalDomain from "@/schema/manual-schema/CategoricalDomain";
+import CategoricalDomain from "@/schema/up2tom-v3/manual-schema/CategoricalDomain";
 import { ComponentPropsWithoutRef } from "react";
 
 interface InputGroupProps extends ComponentPropsWithoutRef<"select"> {

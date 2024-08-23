@@ -1,11 +1,11 @@
 'use server'
 
-import Data from "@/schema/manual-schema/Data";
-import Model from "@/schema/manual-schema/Model";
-import Scenario from "@/schema/manual-schema/Scenario";
-import DecisionSuccessResponse from "@/schema/manual-schema/DecisionSuccessResponse";
-import DecisionErrorResponse from "@/schema/manual-schema/DecisionErrorResponse";
-import { V3_API_Pathnames } from "@/schema/manual-schema/Enums";
+import Data from "@/schema/up2tom-v3/manual-schema/Data";
+import Model from "@/schema/up2tom-v3/manual-schema/Model";
+import Scenario from "@/schema/up2tom-v3/manual-schema/Scenario";
+import DecisionSuccessResponse from "@/schema/up2tom-v3/manual-schema/DecisionSuccessResponse";
+import DecisionErrorResponse from "@/schema/up2tom-v3/manual-schema/DecisionErrorResponse";
+import { V3_API_Pathnames } from "@/schema/up2tom-v3/manual-schema/Enums";
 
 // TODO: move constants to a config file
 const baseUrl = 'https://api.up2tom.com';

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getTomDecision } from "@/app/actions";
-import Model from "@/schema/manual-schema/Model";
+import Model from "@/schema/up2tom-v3/manual-schema/Model";
 import AttributeInput from "./AttributeInput";
 import { useFormState, useFormStatus } from "react-dom";
 

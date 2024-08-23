@@ -1,4 +1,4 @@
-import ContinuousDomain from "@/schema/manual-schema/ContinuousDomain";
+import ContinuousDomain from "@/schema/up2tom-v3/manual-schema/ContinuousDomain";
 import { ComponentPropsWithoutRef } from "react";
 
 interface InputGroupProps extends ComponentPropsWithoutRef<"input"> {
