@@ -27,7 +27,7 @@ export async function getTomDecision(modelId: string, formData: FormData): Promi
         }
     }
 
-    console.log("Getting tom decision:", modelId, scenarioData, scenarioData.data.attributes.input);
+    console.log("Getting tom decision:", modelId, JSON.stringify(scenarioData));
 
     const res = await fetch(`https://api.up2tom.com/v3/decision/${modelId}`, {
             method: 'POST',
