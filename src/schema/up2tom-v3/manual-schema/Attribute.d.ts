@@ -1,9 +1,10 @@
 import AttributeType from "./AttributeType";
-import Domain from "./Domain";
+import CategoricalDomain from "./CategoricalDomain";
+import ContinuousDomain from "./ContinuousDomain";
 
 export default interface Attribute {
     type: AttributeType;
     name: string;
     question: string;
-    domain: Domain;
+    domain: ContinuousDomain | CategoricalDomain; // These are the only two types of domains we have for now
 }
