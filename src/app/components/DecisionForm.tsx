@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { getTomDecision } from "@/app/actions";
+import { postTomDecision } from "@/app/actions";
 import Model from "@/schema/up2tom-v3/manual-schema/Model";
 import AttributeInput from "./AttributeInput";
 import { useFormState, useFormStatus } from "react-dom";
@@ -15,7 +15,7 @@ async function handleSubmit(previousState: any, formData: FormData) {
     const modelId = formData.get('modelId') as string;
     formData.delete('modelId'); // modelId is must be removed from the form data before sending it to the server
     // TODO: validate data here
-    return getTomDecision(modelId, formData);
+    return postTomDecision(modelId, formData);
 }
 
 export default function DecisionForm({ tomModels }: { tomModels: Model[] }): JSX.Element {
