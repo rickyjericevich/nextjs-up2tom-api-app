@@ -1,5 +1,29 @@
+# NOTE: use $$ to escape $ in docker compose yaml
+
 services:
   nextjs-up2tom-api-app:
     build: .
     ports:
       - "3000:3000"
+    environment:
+      UP2TOM_BASE_URL: ${UP2TOM_BASE_URL}
+      UP2TOM_API_KEY: ${UP2TOM_API_KEY}
+
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - mongodb-data:/data/db/
+      - mongodb-data:/var/log/mongodb/
+    restart: always
+    environment:
+      EMAIL: ${EMAIL}
+      MONGO_INITDB_ROOT_USERNAME: ${USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${PASSWORD}
+    ports:  # No need to expose ports when using a reverse proxy like NPM as a sibling compose service
+      - "27017:27017"
+    healthcheck:
+      test: echo "try { console.log('USER ALREADY EXISTS:',db.users.findOne({email:'$$EMAIL'}).email); } catch { db.users.insertOne({email:'$$EMAIL', password:'$$MONGO_INITDB_ROOT_PASSWORD'}); }" | mongosh --authenticationDatabase "admin" -u "$$MONGO_INITDB_ROOT_USERNAME" -p "$$MONGO_INITDB_ROOT_PASSWORD"
+      start_period: 5s
+
+volumes:
+  mongodb-data:

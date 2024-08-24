@@ -8,8 +8,8 @@ import DecisionErrorResponse from "@/schema/up2tom-v3/manual-schema/DecisionErro
 import { V3_API_Pathnames } from "@/schema/up2tom-v3/manual-schema/Enums";
 
 // TODO: move constants to a config file
-const baseUrl = 'https://api.up2tom.com';
-const apiKey = '9307bfd5fa011428ff198bb37547f979';
+const baseUrl = process.env.UP2TOM_BASE_URL || 'https://api.up2tom.com';
+const apiKey = process.env.UP2TOM_API_KEY;
 
 const headers = {
     'Content-Type': 'application/vnd.api+json',
