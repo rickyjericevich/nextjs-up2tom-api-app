@@ -3,7 +3,7 @@ export default interface BatchFile {
   filename: string;
   size: number;
   timestamp: Date;
-  errors: {
+  errors?: {
     message: string;
     value: string;
   }[];
