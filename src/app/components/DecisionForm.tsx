@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { postTomDecision } from "@/app/actions";
 import Model from "@/schema/up2tom-v3/manual-schema/Model";
-import AttributeInput from "./AttributeInput";
+import AttributeInput from "@/app/components/AttributeInput";
 import { useFormState } from "react-dom";
 import FormSubmitButton from "@/app/components/FormSubmitButton";
 
@@ -28,21 +28,32 @@ export default function DecisionForm({ tomModels }: { tomModels: Model[] }): JSX
         console.log("STATE:", state);
     }, [state]);
 
-    return <div>
+    return (
+            <form action={formAction}>
+                <label>
+                    <span className="block">Choose a model:</span>
+                    <select
+                        name="modelId"
+                        onChange={changeModel}
+                        value={model?.id}
+                        className="mt-1 block w-full px-3 py-2 dark:border-gray-600 sm:text-sm"
+                    >
+                        {tomModels.map(model => (
+                            <option key={model.id} value={model.id}>
+                                {model.attributes.name}
+                            </option>
+                        ))}
+                    </select>
+                </label>
 
-        <form action={formAction}>
-
-            <label>
-                Choose a model:
-                <select name="modelId" onChange={changeModel} value={model?.id}>
-                    {tomModels.map(model => <option key={model.id} value={model.id}>{model.attributes.name}</option>)}
-                </select>
-            </label>
-
-            {model?.attributes.metadata.attributes.map(attr => <AttributeInput key={attr.name} attribute={attr} />)}
-            {model && <FormSubmitButton>Submit</FormSubmitButton>}
-
-        </form>
-
-    </div>
+                {model?.attributes.metadata.attributes.map(attr => (
+                    <AttributeInput key={attr.name} attribute={attr} />
+                ))}
+                {model && (
+                    <FormSubmitButton className="w-full border border-transparent text-sm font-medium">
+                        Submit
+                    </FormSubmitButton>
+                )}
+            </form>
+    );
 }

@@ -9,12 +9,14 @@ export default function LoginPage() {
 
   return (
     <main className="bg-gradient-to-b from-transparent to-background-end-rgb">
+
       <form action={formAction}>
+
         <h1 className="text-2xl mb-6 text-center text-gray-900 dark:text-gray-100">
           Please log in to continue
         </h1>
 
-        <label htmlFor="email" className="mb-4">
+        <label htmlFor="email">
           <span className="block">Email</span>
           <input
             id="email"
@@ -48,7 +50,9 @@ export default function LoginPage() {
             <h2>{loginErrorMessage} Please try again.</h2>
           </div>
         )}
+
       </form>
+
     </main>
   );
 }
