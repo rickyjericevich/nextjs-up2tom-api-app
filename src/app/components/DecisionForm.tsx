@@ -4,12 +4,8 @@ import { useEffect, useState } from "react";
 import { postTomDecision } from "@/app/actions";
 import Model from "@/schema/up2tom-v3/manual-schema/Model";
 import AttributeInput from "./AttributeInput";
-import { useFormState, useFormStatus } from "react-dom";
-
-function SubmitButton() {
-    const { pending } = useFormStatus();
-    return <button type="submit" aria-disabled={pending}>Submit</button>
-}
+import { useFormState } from "react-dom";
+import FormSubmitButton from "@/app/components/FormSubmitButton";
 
 async function handleSubmit(previousState: any, formData: FormData) {
     const modelId = formData.get('modelId') as string;
@@ -29,10 +25,11 @@ export default function DecisionForm({ tomModels }: { tomModels: Model[] }): JSX
 
     useEffect(() => {
         //output the current values entered in the form
-        console.log("STATE:",state);
-      }, [state]);
+        console.log("STATE:", state);
+    }, [state]);
 
     return <div>
+
         <form action={formAction}>
 
             <label>
@@ -43,8 +40,9 @@ export default function DecisionForm({ tomModels }: { tomModels: Model[] }): JSX
             </label>
 
             {model?.attributes.metadata.attributes.map(attr => <AttributeInput key={attr.name} attribute={attr} />)}
-            {model && < SubmitButton />}
+            {model && <FormSubmitButton>Submit</FormSubmitButton>}
 
         </form>
+
     </div>
 }
