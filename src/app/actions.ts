@@ -8,7 +8,7 @@ import DecisionErrorResponse from "@/schema/up2tom-v3/manual-schema/DecisionErro
 import { V3_API_Pathnames } from "@/schema/up2tom-v3/manual-schema/Enums";
 import GetBatchFilesSuccessResponse from "@/schema/up2tom-v3/manual-schema/GetBatchFilesSuccessResponse";
 import { AuthError } from 'next-auth';
-import { signIn } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth";
 
 // TODO: move constants to a config file
 const baseUrl = process.env.UP2TOM_BASE_URL || 'https://api.up2tom.com';
@@ -65,4 +65,8 @@ export async function authenticate(prevState: string | undefined, formData: Form
         }
         throw error;
     }
+}
+
+export async function logOut(){
+    await signOut();
 }
