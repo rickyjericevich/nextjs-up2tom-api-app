@@ -7,6 +7,8 @@ import DecisionSuccessResponse from "@/schema/up2tom-v3/manual-schema/DecisionSu
 import DecisionErrorResponse from "@/schema/up2tom-v3/manual-schema/DecisionErrorResponse";
 import { V3_API_Pathnames } from "@/schema/up2tom-v3/manual-schema/Enums";
 import GetBatchFilesSuccessResponse from "@/schema/up2tom-v3/manual-schema/GetBatchFilesSuccessResponse";
+import { AuthError } from 'next-auth';
+import { signIn } from "@/lib/auth";
 
 // TODO: move constants to a config file
 const baseUrl = process.env.UP2TOM_BASE_URL || 'https://api.up2tom.com';
@@ -46,4 +48,21 @@ export async function postTomDecision(modelId: string, formData: FormData): Prom
 export async function getBatchFilesAndJobs(modelId: string): Promise<Data<GetBatchFilesSuccessResponse>> {
     const res = await fetch(new URL(`${V3_API_Pathnames.Batch}/${modelId}`, baseUrl), { headers });
     return res.json();
+}
+
+export async function authenticate(prevState: string | undefined, formData: FormData) {
+    console.debug("Authenticating with credentials:", formData);
+    try {
+        await signIn('credentials', formData);
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid credentials.';
+                default:
+                    return 'Something went wrong.';
+            }
+        }
+        throw error;
+    }
 }

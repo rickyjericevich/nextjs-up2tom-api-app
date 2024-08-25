@@ -24,7 +24,7 @@ export function convertURLSearchParamsToObject(params: URLSearchParams): Record<
     return obj;
 }
 
-export async function queryDocumentsFromDb<Type>(MongooseModel: Model<Type>, query: Record<string, any> = {}): Promise<Model<Type>[]> {
+export async function queryDocumentsFromDb<Type>(MongooseModel: Model<Type>, query: Record<string, any> = {}): Promise<Type[]> {
     return MongooseModel.find(query);
 }
 
