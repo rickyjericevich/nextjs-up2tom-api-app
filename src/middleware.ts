@@ -1,10 +1,7 @@
 import NextAuth from 'next-auth';
 import { authConfig } from '@/auth.config';
-import { NextApiRequest, NextApiResponse } from 'next';
  
-export default async function middleware(req: NextApiRequest, res: NextApiResponse) {
-  NextAuth(authConfig).auth(req, res);
-}
+export default NextAuth(authConfig).auth;
  
 export const config = {
   // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
