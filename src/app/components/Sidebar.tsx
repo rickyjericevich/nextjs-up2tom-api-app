@@ -8,13 +8,13 @@ import { usePathname } from 'next/navigation';
 
 const dashboardRoutes = [
     { name: "Home", href: "/dashboard", icon: HomeIcon },
-    { name: "Decisions", href: "/dashboard/decisions", icon: ServerIcon },
-    { name: "Batches", href: "/dashboard/batches", icon: ServerStackIcon }
+    // { name: "Decisions", href: "/dashboard/decisions", icon: ServerIcon },
+    // { name: "Batches", href: "/dashboard/batches", icon: ServerStackIcon }
 ]
 
 export default function Sidebar() {
     const pathname = usePathname();
-    
+
     const [isOpen, setIsOpen] = useState(false);
 
     function toggleSidebar() {
