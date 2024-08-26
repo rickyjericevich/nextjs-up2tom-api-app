@@ -1,61 +1,67 @@
 'use client'
 
-import { useEffect, useState } from "react";
-import { postTomDecision } from "@/app/actions";
+import { postBatchFile } from "@/app/actions";
 import Model from "@/schema/up2tom-v3/manual-schema/Model";
-import AttributeInput from "@/app/components/AttributeInput";
 import { useFormState } from "react-dom";
 import FormSubmitButton from "@/app/components/FormSubmitButton";
+import ErrorDialog from "./dialogs/ErrorDialog";
+import { Up2TomResponseType } from "@/schema/other/Enums";
+import BatchDialog from "./dialogs/BatchDialog";
+import { DialogButtonType } from "./dialogs/OneButtonDialog";
+import Up2TomSuccessResponse from "@/schema/other/Up2TomSuccessResponse";
+import Job from "@/schema/up2tom-v3/manual-schema/Job";
+import Up2TomErrorResponse from "@/schema/other/Up2TomErrorResponse";
+import Error from "@/schema/up2tom-v3/manual-schema/DecisionError";
 
-async function handleSubmit(previousState: any, formData: FormData) {
-    const modelId = formData.get('modelId') as string;
-    formData.delete('modelId'); // modelId is must be removed from the form data before sending it to the server
-    // TODO: validate data here
-    return postTomDecision(modelId, formData);
-}
+export default function BatchForm({ tomModel }: { tomModel: Model }): JSX.Element {
 
-export default function BatchForm({ tomModels }: { tomModels: Model[] }): JSX.Element {
+    const [formState, formAction] = useFormState(handleSubmitForm, null);
 
-    const [model, setModel] = useState<Model>();
-    const [state, formAction] = useFormState(handleSubmit, null);
-
-    function changeModel(e: React.ChangeEvent<HTMLSelectElement>) {
-        setModel(tomModels.find(m => m.id === e.target.value));
+    function stopShowingDialog() {
+        formAction(); // reset formState to undefined
     }
 
-    useEffect(() => {
-        //output the current values entered in the form
-        console.log("STATE:", state);
-    }, [state]);
+    async function handleSubmitForm(previousState?: any, formData?: FormData): Promise<Up2TomSuccessResponse<Job> | Up2TomErrorResponse<Error> | undefined> {
+        // TODO: validate data here
+        if (!formData) return;
+
+        return postBatchFile(tomModel.id, formData);
+    }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-transparent to-background-end-rgb">
-            {/* <form action={formAction} className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
-                <label className="block mb-4">
-                    <span className="block text-sm font-medium text-gray-700 dark:text-gray-300">Choose a model:</span>
-                    <select
-                        name="modelId"
-                        onChange={changeModel}
-                        value={model?.id}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    >
-                        {tomModels.map(model => (
-                            <option key={model.id} value={model.id}>
-                                {model.attributes.name}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+        <form action={formAction}>
 
-                {model?.attributes.metadata.attributes.map(attr => (
-                    <AttributeInput key={attr.name} attribute={attr} />
-                ))}
-                {model && (
-                    <FormSubmitButton className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Submit
-                    </FormSubmitButton>
-                )}
-            </form> */}
-        </div>
+            <label>
+
+                <span className="block">Select a file:</span>
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".csv"
+                    className="mt-1 block w-full text-sm  dark:text-gray-300 dark:border-gray-600"
+                />
+
+            </label>
+
+            <FormSubmitButton className="w-full border border-transparent text-sm font-medium">
+                Submit
+            </FormSubmitButton>
+
+            {formState && (formState.type === Up2TomResponseType.Success ? (
+                <BatchDialog
+                    tomModel={tomModel}
+                    batch={formState.data}
+                    isShowing={!!formState}
+                    stopShowing={stopShowingDialog}
+                    buttonType={DialogButtonType.Save}
+                />
+            ) : (
+                <ErrorDialog
+                    stopShowing={stopShowingDialog}
+                    error={formState.data}
+                />))}
+
+        </form>
     );
 }

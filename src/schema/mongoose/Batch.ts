@@ -1,23 +1,24 @@
 import { Document, Schema, models, model, Model } from "mongoose";
+import Data from "../up2tom-v3/manual-schema/Data";
+import Job from "../up2tom-v3/manual-schema/Job";
 
-export interface User {
-  email: string;
-  password: string;
+export interface BatchDocument extends Data<Job>, Document {
+  createdBy: string; // TODO: see if this can be changed to ObjectId type
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface UserDocument extends User, Document {}
+const batchSchema = new Schema<BatchDocument>({
+  createdBy: { type: String, required: false },
+  data: {
+    id: { type: String, required: true },
+    filename: { type: String, required: true },
+    uploaded: { type: Date, required: true },
+    size: { type: Number, required: true },
+    progress: { type: Number, required: true },
+  }
+}, { timestamps: true } // Automatically add 'createdAt' and 'updatedAt' fields to the document
+);
 
-const userSchema = new Schema<UserDocument>({
-  email: {
-    type: String,
-    required: [true, "Please provide an email for this user."],
-  },
-  password: {
-    type: String,
-    required: [true, "Please provide a password for this user"],
-    minlength: [8, "Password cannot be less than 8 characters"],
-  },
-});
-
-const UserDocument: Model<UserDocument> = models?.User || model<UserDocument>("User", userSchema);
-export default UserDocument;
+const BatchDocument: Model<BatchDocument> = models?.Batch || model<BatchDocument>("Batch", batchSchema);
+export default BatchDocument;

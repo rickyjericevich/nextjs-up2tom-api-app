@@ -1,59 +1,57 @@
 'use client'
 
-import { useEffect, useState } from "react";
 import { postTomDecision } from "@/app/actions";
 import Model from "@/schema/up2tom-v3/manual-schema/Model";
-import AttributeInput from "@/app/components/AttributeInput";
+import AttributeInput from "@/app/components/inputs/AttributeInput";
 import { useFormState } from "react-dom";
 import FormSubmitButton from "@/app/components/FormSubmitButton";
+import ErrorDialog from "./dialogs/ErrorDialog";
+import { Up2TomResponseType } from "@/schema/other/Enums";
+import DecisionDialog from "./dialogs/DecisionDialog";
+import { DialogButtonType } from "./dialogs/OneButtonDialog";
+import Up2TomSuccessResponse from "@/schema/other/Up2TomSuccessResponse";
+import DecisionSuccessResponse from "@/schema/up2tom-v3/manual-schema/DecisionSuccessResponse";
+import Up2TomErrorResponse from "@/schema/other/Up2TomErrorResponse";
+import DecisionError from "@/schema/up2tom-v3/manual-schema/DecisionError";
 
-async function handleSubmit(previousState: any, formData: FormData) {
-    const modelId = formData.get('modelId') as string;
-    formData.delete('modelId'); // modelId is must be removed from the form data before sending it to the server
-    // TODO: validate data here
-    return postTomDecision(modelId, formData);
-}
+export default function DecisionForm({ tomModel }: { tomModel: Model }): JSX.Element {
 
-export default function DecisionForm({ tomModels }: { tomModels: Model[] }): JSX.Element {
+    const [formState, formAction] = useFormState(handleSubmitForm, undefined);
 
-    const [model, setModel] = useState<Model>();
-    const [state, formAction] = useFormState(handleSubmit, null);
-
-    function changeModel(e: React.ChangeEvent<HTMLSelectElement>) {
-        setModel(tomModels.find(m => m.id === e.target.value));
+    function stopShowingDialog() {
+        formAction(); // reset formState to undefined
     }
 
-    useEffect(() => {
-        //output the current values entered in the form
-        console.log("STATE:", state);
-    }, [state]);
+    async function handleSubmitForm(previousState?: any, formData?: FormData): Promise<Up2TomSuccessResponse<DecisionSuccessResponse> | Up2TomErrorResponse<DecisionError> | undefined> {
+        // TODO: validate data here
+        if (!formData) return;
+
+        return postTomDecision(tomModel.id, formData);
+    }
 
     return (
-            <form action={formAction}>
-                <label>
-                    <span className="block">Choose a model:</span>
-                    <select
-                        name="modelId"
-                        onChange={changeModel}
-                        value={model?.id}
-                        className="mt-1 block w-full px-3 py-2 dark:border-gray-600 sm:text-sm"
-                    >
-                        {tomModels.map(model => (
-                            <option key={model.id} value={model.id}>
-                                {model.attributes.name}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+        <form action={formAction}>
 
-                {model?.attributes.metadata.attributes.map(attr => (
-                    <AttributeInput key={attr.name} attribute={attr} />
-                ))}
-                {model && (
-                    <FormSubmitButton className="w-full border border-transparent text-sm font-medium">
-                        Submit
-                    </FormSubmitButton>
-                )}
-            </form>
+            {tomModel.attributes.metadata.attributes.map(attr => <AttributeInput key={attr.name} attribute={attr} />)}
+
+            <FormSubmitButton className="w-full border border-transparent text-sm font-medium">
+                Submit
+            </FormSubmitButton>
+
+            {formState && (formState.type === Up2TomResponseType.Success ? (
+                <DecisionDialog
+                    tomModel={tomModel}
+                    decision={formState.data}
+                    isShowing={!!formState}
+                    stopShowing={stopShowingDialog}
+                    buttonType={DialogButtonType.Save}
+                />
+            ) : (
+                <ErrorDialog
+                    stopShowing={stopShowingDialog}
+                    error={formState.data}
+                />))}
+
+        </form>
     );
 }

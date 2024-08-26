@@ -23,6 +23,7 @@ export default function LoginPage() {
             type="email"
             name="email"
             placeholder="Enter your email address"
+            autoComplete="email"
             required
             className="mt-1 block w-full px-3 py-2 dark:border-gray-600 sm:text-sm"
           />
@@ -36,6 +37,7 @@ export default function LoginPage() {
             name="password"
             placeholder="Enter password"
             required
+            autoComplete="current-password"
             minLength={8}
             className="mt-1 block w-full px-3 py-2 dark:border-gray-600 sm:text-sm"
           />

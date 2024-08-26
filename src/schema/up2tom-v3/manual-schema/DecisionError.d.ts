@@ -1,11 +1,8 @@
+import Error from "./Error";
 import BlatantExclusion from "./BlatantExclusion";
-import { StatusCode } from "./Enums";
 import RelationshipExclusion from "./RelationshipExclusion";
 import ValueExclusion from "./ValueExclusion";
 
-export default interface DecisionError {
-    title: string;
-    detail: string;
-    status: StatusCode;
+export default interface DecisionError extends Error {
     rules?: Array<BlatantExclusion | RelationshipExclusion | ValueExclusion>
 }

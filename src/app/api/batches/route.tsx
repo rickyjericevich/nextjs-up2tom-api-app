@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 
     const query = convertURLSearchParamsToObject(req.nextUrl.searchParams);
     console.debug("Query params: ", query);
-    
+
     const docs = await queryDocumentsFromDb(Batch, query);
     console.debug("Found batches: ", docs);
     return Response.json(docs);
@@ -26,8 +26,8 @@ export async function POST(req: NextRequest) {
     const savedBatch = await insertDocumentIntoDb(batch);
     console.info("Saved batch: ", savedBatch);
     return Response.json(savedBatch, { status: 201 });
- }
+}
 
 export async function DELETE(req: NextRequest) {
     await dbConnect();
- }
+}

@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 
     const query = convertURLSearchParamsToObject(req.nextUrl.searchParams);
     console.debug("Query params: ", query);
-    
+
     const docs = await queryDocumentsFromDb(Decision, query);
     console.debug("Found decisions: ", docs);
     return Response.json(docs);
@@ -26,9 +26,9 @@ export async function POST(req: NextRequest) {
     const savedDecision = await insertDocumentIntoDb(decision);
     console.info("Saved decision: ", savedDecision);
     return Response.json(savedDecision, { status: 201 });
- }
+}
 
 export async function DELETE(req: NextRequest) {
     await dbConnect();
 
- }
+}
