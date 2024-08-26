@@ -10,6 +10,7 @@ services:
       PORT: ${PORT}
       UP2TOM_BASE_URL: ${UP2TOM_BASE_URL}
       UP2TOM_API_KEY: ${UP2TOM_API_KEY}
+      AUTH_TRUST_HOST: ${AUTH_TRUST_HOST}
 
   mongodb:
     image: mongo:latest

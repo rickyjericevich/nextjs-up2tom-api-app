@@ -15,6 +15,10 @@ Once the setup steps are complete and you've logged in to the app, see the [How 
 
 ### Setup
 
+#### Prerequisites
+
+Make sure to complete the [installation steps](https://nextjs.org/docs/getting-started/installation) for Next.js
+
 #### Run Locally (No Docker Involved)
 
 1. **Install dependencies:**
@@ -46,6 +50,10 @@ Once the setup steps are complete and you've logged in to the app, see the [How 
 #### Run locally using Docker:
 I've included a docker compose file that builds the app and runs it in a container alongside a mongodb instance.
 
+#### Prerequisites
+
+Make sure to complete the [installation steps](https://docs.docker.com/get-docker/) for Docker.
+
 1. **Copy the contents of the `.env.docker.example` file to a file named `.env` and fill in the required environment variables.**
 
     1.1 To obtain the value for the AUTH_SECRET environment variable, run the following command and copy the output into the env file:
@@ -61,7 +69,7 @@ I've included a docker compose file that builds the app and runs it in a contain
 
 2. **Run the containers:**
     ```bash
-    docker-compose up
+    docker compose up
     ```
 
 3. **Open [http://localhost:3000](http://localhost:3000) (assuming $PORT is 3000) with your browser and login using the email and password as per the .env file.**
