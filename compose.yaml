@@ -6,6 +6,7 @@ services:
     ports:
       - "${PORT}:${PORT}"
     environment:
+      MONGODB_URI: ${MONGODB_URI}
       PORT: ${PORT}
       UP2TOM_BASE_URL: ${UP2TOM_BASE_URL}
       UP2TOM_API_KEY: ${UP2TOM_API_KEY}
@@ -21,8 +22,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${PASSWORD}
     ports:  # No need to expose ports when using a reverse proxy like NPM as a sibling compose service
-      - "27017:27017"
-    healthcheck: # this is not actually a healthceck, but rather a way to ensure that the user required for login is always present in the db
+      - "27018:27017"
+    healthcheck: # this is not actually a healthceck, but rather a way to ensure that the user required for login is always present in the default db (test)
       test: echo "try { console.log('USER ALREADY EXISTS:',db.users.findOne({email:'$$EMAIL'}).email); } catch { db.users.insertOne({email:'$$EMAIL', password:'$$MONGO_INITDB_ROOT_PASSWORD'}); }" | mongosh --authenticationDatabase "admin" -u "$$MONGO_INITDB_ROOT_USERNAME" -p "$$MONGO_INITDB_ROOT_PASSWORD"
       start_period: 5s
 
