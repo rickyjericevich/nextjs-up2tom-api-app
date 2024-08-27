@@ -1,6 +1,6 @@
 'use client';
 
-import { authenticate } from '@/app/actions';
+import { authenticate } from '@/lib/up2tom-api';
 import { useFormState } from 'react-dom';
 import FormSubmitButton from '@/app/components/FormSubmitButton';
 

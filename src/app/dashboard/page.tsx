@@ -1,4 +1,4 @@
-import { getTomModels } from '@/app/actions';
+import { getTomModels } from '@/lib/up2tom-api';
 import DecisionOrBatchChooser from '@/app/components/DecisionOrBatchChooser';
 import { Up2TomResponseType } from '@/schema/other/Enums';
 

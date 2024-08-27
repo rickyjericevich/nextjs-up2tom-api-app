@@ -1,6 +1,6 @@
 'use client'
 
-import { postBatchFile } from "@/app/actions";
+import { postBatchFile } from "@/lib/up2tom-api";
 import Model from "@/schema/up2tom-v3/manual-schema/Model";
 import { useFormState } from "react-dom";
 import FormSubmitButton from "@/app/components/FormSubmitButton";

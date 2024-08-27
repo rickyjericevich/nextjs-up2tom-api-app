@@ -58,7 +58,7 @@ export async function postTomDecision(modelId: string, formData: FormData): Prom
     const input = Array.from(formData.values()).map(v => isNaN(+v) ? v : +v) // convert string numbers to numbers (not necessary - API accepts string numbers too)
     const scenarioData: Data<Scenario> = { data: { type: "scenario", attributes: { input } } };
 
-    console.log("Getting tom decision:", modelId, JSON.stringify(scenarioData));
+    console.log("Getting tom decision:", modelId, JSON.stringify(scenarioData), headers);
 
     let res = await fetch(new URL(`${V3_API_Pathnames.Decision}/${modelId}`, baseUrl), {
         method: 'POST',
@@ -96,7 +96,7 @@ export async function getBatchFilesAndJobs(modelId: string): Promise<Up2TomSucce
 
 export async function postBatchFile(modelId: string, formData: FormData): Promise<Up2TomSuccessResponse<Job> | Up2TomErrorResponse<Error>> {
     headers['Content-Type'] = 'multipart/form-data';
-    console.log("Posting batch file:", modelId, formData);
+    console.log("Posting batch file:", modelId, formData, new URL(`${V3_API_Pathnames.Batch}/${modelId}`, baseUrl), headers);
     const res = await fetch(new URL(`${V3_API_Pathnames.Batch}/${modelId}`, baseUrl), {
         method: 'POST',
         headers,
@@ -104,6 +104,8 @@ export async function postBatchFile(modelId: string, formData: FormData): Promis
     });
 
     const body = await res.json();
+
+    console.debug("Batch file response:", body);
 
     if (body.data) return {
         type: Up2TomResponseType.Success,

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { HomeIcon, ServerIcon, ServerStackIcon, ArrowLeftStartOnRectangleIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { logOut } from '../actions';
+import { logOut } from '../../lib/up2tom-api';
 import { usePathname } from 'next/navigation';
 
 const dashboardRoutes = [
