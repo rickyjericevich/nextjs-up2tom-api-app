@@ -1,10 +1,9 @@
-import NextAuth from 'next-auth';
+import NextAuth, { AuthError } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from '@/auth.config';
 import { z } from 'zod';
-import User from '@/schema/mongoose/User';
+import User, { UserDocument } from '@/schema/mongoose/User';
 import { queryDocumentsFromDb } from '@/lib/helpers';
-import { UserDocument } from '@/schema/mongoose/User';
 import dbConnect from '@/lib/db';
 
 async function getUser(email: string): Promise<UserDocument> {
@@ -42,3 +41,20 @@ export const { auth, signIn, signOut } = NextAuth({
     }),
   ],
 });
+
+export async function authenticate(prevState: string | undefined, formData: FormData) {
+  console.debug("Authenticating with credentials:", formData);
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error;
+  }
+}

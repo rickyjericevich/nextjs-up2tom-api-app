@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { HomeIcon, ServerIcon, ServerStackIcon, ArrowLeftStartOnRectangleIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { logOut } from '../../lib/up2tom-api';
+import { signOut } from '@/lib/auth';
 import { usePathname } from 'next/navigation';
 
 const dashboardRoutes = [
@@ -45,7 +45,7 @@ export default function Sidebar() {
 
             </nav>
 
-            {isOpen && <form action={logOut}>
+            {isOpen && <form action={() => signOut()}>
 
                 <button className="flex h-[48px] grow items-center justify-center gap-2 p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3">
                     <ArrowLeftStartOnRectangleIcon className="h-6 w-6" />

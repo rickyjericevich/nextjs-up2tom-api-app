@@ -6,8 +6,6 @@ import Scenario from "@/schema/up2tom-v3/manual-schema/Scenario";
 import DecisionSuccessResponse from "@/schema/up2tom-v3/manual-schema/DecisionSuccessResponse";
 import { V3_API_Pathnames } from "@/schema/up2tom-v3/manual-schema/Enums";
 import GetBatchFilesSuccessResponse from "@/schema/up2tom-v3/manual-schema/GetBatchFilesSuccessResponse";
-import { AuthError } from 'next-auth';
-import { signIn, signOut } from "@/lib/auth";
 import DecisionError from "@/schema/up2tom-v3/manual-schema/DecisionError";
 import { Up2TomResponseType } from "@/schema/other/Enums";
 import Up2TomSuccessResponse from "@/schema/other/Up2TomSuccessResponse";
@@ -116,25 +114,4 @@ export async function postBatchFile(modelId: string, formData: FormData): Promis
         type: Up2TomResponseType.Error,
         data: body.errors[0]
     }
-}
-
-export async function authenticate(prevState: string | undefined, formData: FormData) {
-    console.debug("Authenticating with credentials:", formData);
-    try {
-        await signIn('credentials', formData);
-    } catch (error) {
-        if (error instanceof AuthError) {
-            switch (error.type) {
-                case 'CredentialsSignin':
-                    return 'Invalid credentials.';
-                default:
-                    return 'Something went wrong.';
-            }
-        }
-        throw error;
-    }
-}
-
-export async function logOut() {
-    await signOut();
 }
