@@ -3,12 +3,10 @@ import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from '@/auth.config';
 import { z } from 'zod';
 import User, { UserDocument } from '@/schema/mongoose/User';
-import { queryDocumentsFromDb } from '@/lib/helpers';
-import dbConnect from '@/lib/db';
+import { queryDocumentsFromDb } from '@/lib/db';
 
 async function getUser(email: string): Promise<UserDocument> {
   try {
-    await dbConnect();
     const users = await queryDocumentsFromDb(User, { email });
     return users[0];
   } catch (error) {
@@ -58,3 +56,4 @@ export async function authenticate(prevState: string | undefined, formData: Form
     throw error;
   }
 }
+

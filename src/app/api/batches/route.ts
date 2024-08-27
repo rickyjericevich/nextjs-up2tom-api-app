@@ -1,15 +1,15 @@
 import { type NextRequest } from 'next/server'
-import User from '@/schema/mongoose/User';
+import Batch from '@/schema/mongoose/Batch';
 import { deleteRequest, getRequest, postRequest } from '@/lib/api';
 
 export async function GET(req: NextRequest) {
-    return getRequest(User, req);
+    return getRequest(Batch, req);
 }
 
 export async function POST(req: NextRequest) {
-    return postRequest(User, req);
+    return postRequest(Batch, req);
 }
 
 export async function DELETE(req: NextRequest) {
-    return deleteRequest(User, req);
+    return deleteRequest(Batch, req);
 }
