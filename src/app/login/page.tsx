@@ -5,7 +5,12 @@ import { useFormState } from 'react-dom';
 import FormSubmitButton from '@/app/components/FormSubmitButton';
 
 export default function LoginPage() {
-  const [loginErrorMessage, formAction] = useFormState(authenticate, undefined);
+
+  const [loginErrorMessage, formAction] = useFormState(handleFormSubmit, undefined);
+
+  function handleFormSubmit(prevState: string | undefined, formData: FormData) {
+    return authenticate(formData);
+  }
 
   return (
     <main className="bg-gradient-to-b from-transparent to-background-end-rgb">

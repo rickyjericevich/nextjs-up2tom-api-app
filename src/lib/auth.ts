@@ -1,3 +1,5 @@
+'use server'
+
 import NextAuth, { AuthError } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from '@/auth.config';
@@ -40,7 +42,7 @@ export const { auth, signIn, signOut } = NextAuth({
   ],
 });
 
-export async function authenticate(prevState: string | undefined, formData: FormData) {
+export async function authenticate(formData: FormData) {
   console.debug("Authenticating with credentials:", formData);
   try {
     await signIn('credentials', formData);
@@ -56,4 +58,3 @@ export async function authenticate(prevState: string | undefined, formData: Form
     throw error;
   }
 }
-
