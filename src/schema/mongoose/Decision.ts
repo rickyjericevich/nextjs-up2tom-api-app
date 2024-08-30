@@ -26,5 +26,4 @@ const decisionSchema = new Schema<DecisionDocument>({
 }, { timestamps: true } // Automatically add 'createdAt' and 'updatedAt' fields to the document
 );
 
-const DecisionDocument: Model<DecisionDocument> = models?.Decision || model<DecisionDocument>("Decision", decisionSchema);
-export default DecisionDocument;
+export const DecisionModel: Model<DecisionDocument> = models?.Decision || model<DecisionDocument>("Decision", decisionSchema);

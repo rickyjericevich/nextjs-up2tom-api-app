@@ -20,5 +20,4 @@ const batchSchema = new Schema<BatchDocument>({
 }, { timestamps: true } // Automatically add 'createdAt' and 'updatedAt' fields to the document
 );
 
-const BatchDocument: Model<BatchDocument> = models?.Batch || model<BatchDocument>("Batch", batchSchema);
-export default BatchDocument;
+export const BatchModel: Model<BatchDocument> = models?.Batch || model<BatchDocument>("Batch", batchSchema);

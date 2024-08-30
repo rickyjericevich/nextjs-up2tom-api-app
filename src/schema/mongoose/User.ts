@@ -20,5 +20,4 @@ const userSchema = new Schema<UserDocument>({
   },
 });
 
-const UserDocument: Model<UserDocument> = models?.User || model<UserDocument>("User", userSchema);
-export default UserDocument;
+export const UserModel: Model<UserDocument> = models?.User || model<UserDocument>("User", userSchema);

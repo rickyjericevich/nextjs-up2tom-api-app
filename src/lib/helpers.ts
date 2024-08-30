@@ -1,4 +1,4 @@
-export function getPropertyGivenStringPath(path: string, obj: object = self, separator = '.'): any { // https://stackoverflow.com/a/22129960
+export function getPropertyGivenStringPath(path: string, obj: object, separator = '.'): any { // https://stackoverflow.com/a/22129960
     const properties = Array.isArray(path) ? path : path.split(separator)
     return properties.reduce((prev, curr) => prev?.[curr], obj)
 }

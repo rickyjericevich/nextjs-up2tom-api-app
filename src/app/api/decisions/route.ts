@@ -1,15 +1,11 @@
 import { type NextRequest } from 'next/server'
-import Decision from '@/schema/mongoose/Decision';
-import { deleteRequest, getRequest, postRequest } from '@/lib/api';
+import { DecisionModel } from '@/schema/mongoose/Decision';
+import { handleGetRequest, handlePostRequest } from '@/lib/api-server-side';
 
 export async function GET(req: NextRequest) {
-    return getRequest(Decision, req);
+    return handleGetRequest(DecisionModel, req);
 }
 
 export async function POST(req: NextRequest) {
-    return postRequest(Decision, req);
-}
-
-export async function DELETE(req: NextRequest) {
-    return deleteRequest(Decision, req);
+    return handlePostRequest(DecisionModel, req);
 }

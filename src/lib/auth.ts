@@ -4,12 +4,12 @@ import NextAuth, { AuthError } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from '@/auth.config';
 import { z } from 'zod';
-import User, { UserDocument } from '@/schema/mongoose/User';
+import { UserModel, UserDocument } from '@/schema/mongoose/User';
 import { queryDocumentsFromDb } from '@/lib/db';
 
 async function getUser(email: string): Promise<UserDocument> {
   try {
-    const users = await queryDocumentsFromDb(User, { email });
+    const users = await queryDocumentsFromDb(UserModel, { email });
     return users[0];
   } catch (error) {
     console.error('Failed to fetch user:', error);

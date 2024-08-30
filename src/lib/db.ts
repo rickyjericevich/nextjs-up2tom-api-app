@@ -1,4 +1,4 @@
-import { Mongoose, connect, Model, Document } from "mongoose";
+import mongoose, { Mongoose, connect, Model, Document } from "mongoose";
 import { getPropertyGivenStringPath } from "./helpers";
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/test';
@@ -27,18 +27,16 @@ export async function connectToDatabase(): Promise<Mongoose> {
 };
 
 
-export async function queryDocumentsFromDb<Type>(MongooseModel: Model<Type>, query: Record<string, any> = {}): Promise<Type[]> {
+export async function queryDocumentsFromDb<Type>(mongooseModel: Model<Type>, query: Record<string, any> = {}): Promise<Type[]> {
     await connectToDatabase();
 
-    return MongooseModel.find(query);
+    return mongooseModel.find(query);
 }
 
 export async function insertDocumentIntoDb<Type>(document: Document<Type>): Promise<Document<Type>> {
     await connectToDatabase();
 
-    const model = document.constructor as Model<Type>;
-
-    const existingDocument: Document<Type> | null = await model.findOne({ 'data.id': getPropertyGivenStringPath('data.id', document) }); // check if document already exists // TODO: dont just assume that the id field is always present and unique
+    const existingDocument: Document<Type> | null = await document.model().findOne({ 'data.id': getPropertyGivenStringPath('data.id', document) }); // check if document already exists // TODO: dont just assume that the id field is always present and unique
 
     if (existingDocument) {
         console.debug("Not creating new document as it already exists: ", existingDocument);
@@ -48,7 +46,7 @@ export async function insertDocumentIntoDb<Type>(document: Document<Type>): Prom
     return document.save(); // otherwise save it in the db and return it
 }
 
-export async function deleteDocumentFromDb<Type>() {
+export async function deleteDocumentFromDb<Type>(mongooseModel: Model<Type>, _id: mongoose.Types.ObjectId): Promise<Document<Type> | null> {
     await connectToDatabase();
-    // TODO: implement
+    return mongooseModel.findByIdAndDelete(_id);
 }

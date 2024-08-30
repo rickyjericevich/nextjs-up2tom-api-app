@@ -1,15 +1,11 @@
 import { type NextRequest } from 'next/server'
-import Batch from '@/schema/mongoose/Batch';
-import { deleteRequest, getRequest, postRequest } from '@/lib/api';
+import { BatchModel } from '@/schema/mongoose/Batch';
+import { handleGetRequest, handlePostRequest } from '@/lib/api-server-side';
 
 export async function GET(req: NextRequest) {
-    return getRequest(Batch, req);
+    return handleGetRequest(BatchModel, req);
 }
 
 export async function POST(req: NextRequest) {
-    return postRequest(Batch, req);
-}
-
-export async function DELETE(req: NextRequest) {
-    return deleteRequest(Batch, req);
+    return handlePostRequest(BatchModel, req);
 }
